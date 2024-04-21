@@ -2,6 +2,8 @@
 
 namespace Core\Frontend\DTO;
 
+use Illuminate\Support\Str;
+
 readonly class Navigation extends BaseDTO
 {
 
@@ -63,10 +65,11 @@ readonly class Navigation extends BaseDTO
     // to prety string to be stored in a php array return file
     public function toPhpArrayString(): string
     {
-        $data = [$this->toArray()];
-        $tmp = str_replace('{', '[', str_replace('}', ']', json_encode($data, JSON_PRETTY_PRINT)));
-        $tmp = str_replace(': ', ' => ', $tmp);
-        return sprintf("<?php\n\nreturn %s;", $tmp);
+        return Str::of(json_encode([$this->toArray()], JSON_PRETTY_PRINT))
+            ->replace('{', '[')
+            ->replace('}', ']')
+            ->replace(': ', ' => ')
+            ->__toString();
     }
 
 }

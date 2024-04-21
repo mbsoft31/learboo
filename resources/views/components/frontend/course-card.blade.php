@@ -10,8 +10,12 @@
         </div>
         <div>
             <div class="flex items-center gap-x-4 text-xs">
-                <time datetime="2020-03-16" class="text-gray-500">{{ $course->date }}</time>
-                <a href="#" class="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">{{ $course->category }}</a>
+                <time datetime="{{ $course->date->format('Y-m-d') }}" class="text-gray-500">
+                    {{ $course->date->format('d M Y') }}
+                </time>
+                <a href="#" class="relative z-10 rounded-full text-lg bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">
+                    {{ $course->category->name }}
+                </a>
             </div>
             <div class="group relative max-w-xl">
                 <h3 class="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
@@ -31,10 +35,10 @@
                         <p class="font-semibold text-gray-900">
                             <a href="#">
                                 <span class="absolute inset-0"></span>
-                                {{ $course->teacher->name }}
+                                {{ $course->teacher->fullName }}
                             </a>
                         </p>
-                        <p class="text-gray-600">{{ $course->teacher->role }}</p>
+                        <p class="text-gray-600 capitalize">{{ join(', ', $course->teacher->role) }}</p>
                     </div>
                 </div>
             </div>

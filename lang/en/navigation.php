@@ -6,7 +6,7 @@ return [
     'courses' => 'Courses',
     'podcasts' => 'Podcasts',
     'readboo' => 'ReadBoo!',
-    'about_us' => 'About Us',
+    'why_us' => 'Why Us',
     'contact_us' => 'Contact Us',
     'dashboard' => 'Dashboard',
     'profile' => 'Profile',

@@ -22,9 +22,9 @@ return [
             "route" => "readboo",
             "icon" => "book-open",
         ],
-        'about_us' => [
-            "label" => trans("navigation.about_us"),
-            "route" => "about_us",
+        'why_us' => [
+            "label" => trans("navigation.why_us"),
+            "route" => "why_us",
             "icon" => "users",
         ],
         'contact_us' => [
