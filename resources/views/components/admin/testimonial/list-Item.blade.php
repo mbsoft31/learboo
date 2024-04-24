@@ -7,8 +7,7 @@
 <li x-data="accordion({open: false})" class="group">
     <div class="relative flex justify-between gap-x-6 px-4 py-5 group-hover:bg-gray-50 sm:px-6">
         <div class="flex min-w-0 gap-x-4">
-            <img class="h-12 w-12 flex-none rounded-full bg-gray-50" src="{{ $testimonial->imageUrl }}"
-                 alt="{{ $testimonial->name }}">
+            <img class="h-12 w-12 flex-none rounded-full bg-gray-50" src="{{ $testimonial->imageUrl }}" alt="{{ $testimonial->name }}">
             <div class="min-w-0 flex-auto">
                 <p class="text-sm font-semibold leading-6 text-gray-900">
                     <button @click="toggleAccordion()">

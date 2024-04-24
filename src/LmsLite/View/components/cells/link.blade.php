@@ -13,8 +13,6 @@
     ];
     $class = $class ?? ' ' . $colors[$color];
 @endphp
-<a
-    href="{{ $href }}"
-    class="{{ $class }}">
+<a href="{{ $href }}" class="{{ $class }}">
     {!! $value !!}
 </a>
