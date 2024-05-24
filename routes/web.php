@@ -11,14 +11,33 @@ use Core\Admin\Handlers\TestimonialUpdate;
 use Core\Frontend\Handlers\AboutPageHandler;
 use Core\Frontend\Handlers\ContactUsCreate;
 use Core\Frontend\Handlers\ContactUsShow;
+use Core\Frontend\Handlers\CoursePageHandler;
 use Core\Frontend\Handlers\HomePageHandler;
-use Core\LmsLite\DataObjects\CourseData;
 use Core\LmsLite\Handlers\AdminListTeacherCourses;
 use Core\LmsLite\Handlers\AdminListTeachers;
 use Core\LmsLite\Handlers\AdminTeacherCreate;
-use Core\LmsLite\View\Cells\TableCell;
-use Core\LmsLite\View\CourseTableTest;
+use Core\LmsLite\Handlers\TeacherCourseCreate;
+use Core\Support\Colors;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/palette', function (){
+    $config = require base_path('src/Support/colors-config.php');
+
+    return view('palette', [
+        'config'   => $config,
+        'colors'   => Colors::getColors(),
+        'variants' => Colors::getVariants(),
+        'getHex'   => function($name, $variant, $for = 'bg') {
+            if ($for === 'bg')
+                return Colors::getHexColor($name, $variant);
+            else if ($for === 'text')
+                return Colors::getHexTextColor($name, $variant);
+            else
+                return Colors::getHexColor($name, $variant);
+        },
+    ]);
+});
+
 
 /*
  * Public routes
@@ -30,6 +49,9 @@ Route::get('/', [HomePageHandler::class, '__invoke'])
 // About page
 Route::get('/why_us', [AboutPageHandler::class, '__invoke'])
     ->name("why_us");
+
+Route::get('/courses/{course}', [CoursePageHandler::class, '__invoke'])
+    ->name("course");
 
 // Contact page
 Route::get('/contact', [ContactUsShow::class, '__invoke'])
@@ -48,7 +70,7 @@ Route::middleware(['auth'/*, 'admin'*/])
     ->prefix('/admin')
     ->as('admin.')
     ->group(function () {
-        Route::get('/dashboard', fn() => view('dashboard'))
+        Route::get('/', fn() => view('dashboard'))
             ->name('dashboard');
 
         Route::get('/courses', [AdminListTeacherCourses::class, 'getAllCourses'])
@@ -57,6 +79,7 @@ Route::middleware(['auth'/*, 'admin'*/])
         // List teachers
         Route::get('/teachers', [AdminListTeachers::class, '__invoke'])
             ->name('teachers');
+
         // create teacher
         Route::get('/teachers/create', [AdminTeacherCreate::class, '__invoke'])
             ->name('teachers.create');
@@ -108,6 +131,15 @@ Route::middleware(['auth'/*, 'teacher'*/])
     ->group(function () {
         Route::get('/dashboard', fn() => view('dashboard'))
             ->name('dashboard');
+
+        Route::get('/{teacher}/courses', [AdminListTeacherCourses::class, '__invoke'])
+            ->name('courses');
+
+        Route::get('/{teacher}/courses/create', [TeacherCourseCreate::class, 'createPage'])
+            ->name('courses.create');
+
+        Route::post('/{teacher}/courses', [TeacherCourseCreate::class, '__invoke'])
+            ->name('courses.store');
     });
 
 /*
@@ -123,4 +155,3 @@ Route::middleware('auth')
     });
 
 require __DIR__.'/auth.php';
-

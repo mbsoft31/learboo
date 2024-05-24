@@ -4,8 +4,10 @@ namespace Core\LmsLite\Repositories;
 
 use App\Models\Course;
 use App\Models\Teacher;
+use Core\LmsLite\DataObjects\CourseData;
 use Core\LmsLite\DataObjects\TeacherData;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class TeacherRepository
 {
@@ -42,11 +44,20 @@ class TeacherRepository
      * @param Request $request
      * @return array
      */
-    public function getTeacherCourses(Teacher|TeacherData $teacher, Request $request): array
+    public function getTeacherCourses(Request $request, Teacher|TeacherData $teacher): array
     {
-        $filters = ['teacher_id' => $teacher->id];
-        $sort = ['date' => 'asc'];
-        $fields = ['*']; // specify the fields you want to select, or leave it empty to select all fields
+        $filters = ['teacher_id' => ['=', $teacher->id]];
+
+        $query = $this->courseQuery();
+
+        $models = CourseData::collect(
+            $query->where('teacher_id', $teacher->id)
+                ->get()
+        );
+
+        return $models->toArray();
+        /*$sort = ['date' => 'desc'];
+        $fields = ['*']; // ['*'] or [] for all
 
         if ($request->has('search')) {
             $filters['title'] = ['like', '%' . $request->search . '%'];
@@ -57,6 +68,25 @@ class TeacherRepository
             $filters['status'] = $request->status;
         }
 
-        return app(CourseRepository::class)->getCourses($filters, $sort, $fields);
+        if ($request->has('sort')) {
+            $sort = $request->sort;
+        }
+
+        if ($request->has('filter'))
+        {
+            foreach ($request->query('filter') as $field => $value){
+                $filters[$field] = $value;
+            }
+        }
+
+        return app(CourseRepository::class)->getCourses($filters, $sort, $fields);*/
     }
+
+    private function courseQuery(): QueryBuilder|Course
+    {
+        return QueryBuilder::for(Course::class)
+            ->allowedFilters(['title', 'description', 'level', 'teacher_id'])
+            ->allowedSorts(['date']);
+    }
+
 }

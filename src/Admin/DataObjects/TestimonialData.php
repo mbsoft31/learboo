@@ -36,7 +36,7 @@ class TestimonialData extends Data
     public static function fromModel(Testimonial $testimonial): self
     {
         return new self(
-            id: $testimonial->id,
+            id: $testimonial?->id??0,
             name: $testimonial->name,
             email: $testimonial->email,
             position: $testimonial->position,
@@ -49,7 +49,7 @@ class TestimonialData extends Data
     public static function fromRequest(Request $request): self
     {
         return new self(
-            id: $request->id,
+            id: $request?->id??0,
             name: $request->name,
             email: $request->email,
             position: $request->position,

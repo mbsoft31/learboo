@@ -11,6 +11,7 @@ use Core\LmsLite\View\CourseTableTest;
 use Core\LmsLite\View\Menu\Menu;
 use Core\LmsLite\View\Menu\MenuItemLink;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class AdminListTeacherCourses
 {
@@ -21,14 +22,14 @@ class AdminListTeacherCourses
         // filter: filter by status, sort: sort by name, pagination: 10 items per page, search: search by name
 
         // filter
-        $courses = $repository->getTeacherCourses($teacher, $request);
+        $courses = $repository->getTeacherCourses($request, $teacher);
 
         return [
             'courses' => $courses,
         ];
     }
 
-    public function getAllCourses(Request $request)
+    public function getAllCourses(Request $request): View
     {
         $table = CourseTableTest::init(
             CourseData::collect(

@@ -13,9 +13,7 @@ use Throwable;
 
 class CourseTableTest
 {
-
     protected array $columns = [];
-
     protected array $actions = [
         'view' => [
             'value' => 'View',
@@ -36,37 +34,12 @@ class CourseTableTest
             'color' => 'red',
         ],
     ];
-
-    protected array $filters = [
-        'status' => 'Status',
-        'search' => 'Search',
-    ];
-
-    protected array $sort = [
-        'title' => 'Title',
-        'date' => 'Date',
-        'category' => 'Category',
-        'teacher' => 'Teacher',
-    ];
-
-    protected array $pagination = [
-        10 => 10,
-        20 => 20,
-        50 => 50,
-        100 => 100,
-    ];
-
-    protected array $status = [
-        'published' => 'Published',
-        'draft' => 'Draft',
-        'deleted' => 'Deleted',
-    ];
+    protected array $filters = [];
+    protected array $sort = [];
+    protected array $pagination = [];
+    protected array $status = [];
     private array $table = [];
 
-
-    /**
-     * @param array|Array<CourseData>|Collection $courses
-     */
     public function __construct(
         public array|Collection $courses
     ){}
@@ -76,25 +49,48 @@ class CourseTableTest
         return new self($courses);
     }
 
-    // add column to table
     public function addColumn(string $name, string $header, Closure $closure): CourseTableTest
     {
-        $this->columns[$name] = [
-            'header' => $header,
-            'cell' => $closure,
-        ];
+        $this->columns[$name] = compact('header', 'closure');
+        return $this;
+    }
+
+    public function addAction(string $key, string $value, string $href, string $class, string $color): CourseTableTest
+    {
+        $this->actions[$key] = compact('value', 'href', 'class', 'color');
+        return $this;
+    }
+
+    public function addFilter(string $key, string $label): CourseTableTest
+    {
+        $this->filters[$key] = $label;
+        return $this;
+    }
+
+    public function addSort(string $key, string $label): CourseTableTest
+    {
+        $this->sort[$key] = $label;
+        return $this;
+    }
+
+    public function addPagination(int $value): CourseTableTest
+    {
+        $this->pagination[$value] = $value;
+        return $this;
+    }
+
+    public function addStatus(string $key, string $label): CourseTableTest
+    {
+        $this->status[$key] = $label;
         return $this;
     }
 
     public function createActionsMenu(): Menu
     {
-        /*$menu = (new Menu())->addItem(new MenuItemLink('view', 'View', 'view/%s'))
-            ->addItem(new MenuItemLink('edit', 'Edit', 'edit/%s'))
-            ->addItem(new MenuItemLink('delete', 'Delete', 'delete/%s'));*/
         $menu = new Menu();
-        foreach ($this->actions as $key => $value) {
-            $item = new MenuItemLink($key, $value['value'], $value['href']);
-            $item->setColor($value['color']);
+        foreach ($this->actions as $key => $action) {
+            $item = new MenuItemLink($key, $action['value'], $action['href']);
+            $item->setColor($action['color']);
             $menu = $menu->addItem($item);
         }
         return $menu;
@@ -105,32 +101,8 @@ class CourseTableTest
      */
     public function render(): string
     {
-        /** @var TableCell $this->columns['cell']*/
-        $body = [];
-        foreach ($this->courses as $course) {
-            $row = [];
-
-            foreach ($this->columns as $name => $column) {
-                /** @var TableCell $cell*/
-                $cell = $column['cell']($name, $course, $this->actions);
-
-                $row[$name] = $cell->render();
-            }
-            $body[] = $row;
-        }
-
-        $head = [];
-        foreach ($this->columns as $column) {
-            $head[] = TableCell::Header($column['header'])->render();
-        }
-
-        $body = view('lms::table-body', [
-            'body' => Arr::join(Arr::map($body, function ($row) {
-                return view('lms::table-row', ['row' => Arr::join($row, "\n")])->render();
-            }), "\n")
-        ])->render();
-        $head = view('lms::table-header', ['row' => Arr::join($head, "\n")])->render();
-
+        $head = $this->renderHeader();
+        $body = $this->renderBody();
         return view('lms::table', [
             'title' => 'Courses',
             'description' => 'List of courses',
@@ -139,4 +111,36 @@ class CourseTableTest
         ])->render();
     }
 
+    /**
+     * @throws Throwable
+     */
+    protected function renderHeader(): string
+    {
+        $header = [];
+        foreach ($this->columns as $column) {
+            $header[] = TableCell::Header($column['header'])->render();
+        }
+        return view('lms::table-header', ['row' => Arr::join($header, "\n")])->render();
+    }
+
+    /**
+     * @throws Throwable
+     */
+    protected function renderBody(): string
+    {
+        $body = [];
+        foreach ($this->courses as $course) {
+            $row = [];
+            foreach ($this->columns as $name => $column) {
+                $cell = $column['closure']($name, $course, $this->actions);
+                $row[$name] = $cell->render();
+            }
+            $body[] = Arr::join($row, "\n");
+        }
+        return view('lms::table-body', [
+            'body' => Arr::join(Arr::map($body, function ($row) {
+                return view('lms::table-row', ['row' => $row])->render();
+            }), "\n")
+        ])->render();
+    }
 }

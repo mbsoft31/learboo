@@ -1,5 +1,5 @@
 @php
-    /** @var \Core\LmsLite\View\CourseTable $table*/
+    /** @var \Core\LmsLite\View\CourseTableTest $table*/
 @endphp
 <x-app-layout title="Courses">
     {{--Banner--}}

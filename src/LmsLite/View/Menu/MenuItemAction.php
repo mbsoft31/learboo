@@ -3,9 +3,10 @@
 namespace Core\LmsLite\View\Menu;
 
 use Core\LmsLite\Enums\HttpMethod;
+use Stringable;
 use Throwable;
 
-class MenuItemAction extends MenuItem
+class MenuItemAction extends MenuItem implements Stringable
 {
     protected string $view = 'lms::menu.item-action';
     public function __construct(
@@ -30,30 +31,6 @@ class MenuItemAction extends MenuItem
         ])->render();
     }
 
-    public function setView(string $view): MenuItemAction
-    {
-        $this->view = $view;
-        return $this;
-    }
-
-    public function setText(string $text): MenuItemAction
-    {
-        $this->text = $text;
-        return $this;
-    }
-
-    public function setAction(string $action): MenuItemAction
-    {
-        $this->action = $action;
-        return $this;
-    }
-
-    public function setMethod(HttpMethod $method): MenuItemAction
-    {
-        $this->method = $method;
-        return $this;
-    }
-
     public static function Get(string $text, string $action = "#"): MenuItemAction
     {
         return new MenuItemAction($text, $action, HttpMethod::GET);
@@ -67,5 +44,14 @@ class MenuItemAction extends MenuItem
     public static function Delete(string $text, string $action = "#"): MenuItemAction
     {
         return new MenuItemAction($text, $action, HttpMethod::DELETE);
+    }
+
+    public function __toString(): string
+    {
+        try {
+            return $this->render();
+        } catch (Throwable $e) {
+            return '';
+        }
     }
 }

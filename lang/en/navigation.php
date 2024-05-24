@@ -4,8 +4,7 @@ return [
     // (home, courses, podcasts ReadBoo! , about us, contact us)
     'home' => 'Home',
     'courses' => 'Courses',
-    'podcasts' => 'Podcasts',
-    'readboo' => 'ReadBoo!',
+    'read-boo' => 'Podcasts ReadBoo!',
     'why_us' => 'Why Us',
     'contact_us' => 'Contact Us',
     'dashboard' => 'Dashboard',

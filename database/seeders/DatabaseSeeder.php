@@ -161,53 +161,7 @@ class DatabaseSeeder extends Seeder
      */
     public function seedCourses(): void
     {
-        $courses = CourseData::collect([
-            [
-                'title' => 'English for comunication:',
-                'slug' => Str::slug('English for comunication:'),
-                'description' => 'Our English communication course prepares you for real world scenarios you may find when speaking and interacting in English.',
-                'content' => 'This course is best for you if:
-– you can understand a lot of what people say in movies but you can not reply back.
-– you are anxious that you will make mistakes when speaking.
-– you lack practice.
-– you have a basic understanding of English sentence structure.
-– You wish to have friends to practise with.
-– you could understand all of this without needing to translate it.
-Our course focuses mainly on improving your listening, speaking and reading. However,
-there will be plenty of opportunities for you to focus on writing too, making sure you learn
-all four key skills.',
-                'level' => '(CEFR : B1- B2)',
-                'imageUrl' => asset('images/courses/course-1.webp'),
-                'date' => 'Mar 16, 2020',
-                'category' => [
-                    'name' => '(CEFR : B1- B2)',
-                    'slug' => Str::slug('(CEFR : B1- B2)'),
-                ],
-                'teacher' => TeacherData::fromModel(Teacher::find(1))->toArray(),
-                'status' => CourseStatus::PUBLISHED->value,
-                'meta' => []
-            ],
-            [
-                'title' => 'English for beginners:',
-                'slug' => Str::slug('English for beginners:'),
-                'description' => 'Our English Level Course is for beginners only. We focus on building a strong foundation or refine your already existent foundation of the language. Grammar is the center and our main focus.',
-                'content' => 'This course is best for you if:
-- You just started learning English.
-- You know some words in English.
-- You know some grammatical rules but you cannot form a sentence.
-- You want to start learning English the Right way.',
-                'level' => '(CEFR : A1)',
-                'imageUrl' => asset('images/courses/course-1.webp'),
-                'date' => 'Mar 16, 2020',
-                'category' => [
-                    'name' => '(CEFR : A1)',
-                    'slug' => Str::slug('(CEFR : A1)'),
-                ],
-                'teacher' => TeacherData::fromModel(Teacher::find(1))->toArray(),
-                'status' => CourseStatus::DRAFT->value,
-                'meta' => []
-            ],
-        ]);
+        $courses = CourseData::collect(require resource_path('data/courses.php'));
 
         foreach ($courses as $course) {
             $category = Category::createOrFirst([

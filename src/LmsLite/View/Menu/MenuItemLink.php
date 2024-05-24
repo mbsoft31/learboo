@@ -32,24 +32,6 @@ class MenuItemLink extends MenuItem implements Stringable
         ])->render();
     }
 
-    public function setText(string $text): MenuItemLink
-    {
-        $this->text = $text;
-        return $this;
-    }
-
-    public function setHref(string $href): MenuItemLink
-    {
-        $this->href = $href;
-        return $this;
-    }
-
-    public function setTarget(string $target): MenuItemLink
-    {
-        $this->target = $target;
-        return $this;
-    }
-
     public function __toString(): string
     {
         try {

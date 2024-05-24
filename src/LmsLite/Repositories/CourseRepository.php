@@ -7,6 +7,7 @@ use App\Models\Course;
 use Core\LmsLite\DataObjects\CategoryData;
 use Core\LmsLite\DataObjects\CourseData;
 use Exception;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class CourseRepository implements CourseRepositoryContract, CategoryRepositoryContract
 {
@@ -78,7 +79,12 @@ class CourseRepository implements CourseRepositoryContract, CategoryRepositoryCo
 
         // Apply filters
         foreach ($filters as $field => $value) {
-            $query->where($field, $value);
+            if (is_array($value)) {
+                $query->where($field, $value[0], $value[1]);
+            }
+            else {
+                $query->where($field, $value);
+            }
         }
 
         // Apply sorting

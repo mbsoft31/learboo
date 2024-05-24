@@ -4,7 +4,7 @@ return [
     "main" => [
         'home' => [
             "label" => trans("navigation.home"),
-            "route" => "home",
+            "route" => route("home"),
             "icon" => "home",
         ],
         'courses' => [
@@ -12,14 +12,9 @@ return [
             "route" => "courses",
             "icon" => "book",
         ],
-        'podcasts' => [
-            "label" => trans("navigation.podcasts"),
-            "route" => "podcasts",
-            "icon" => "headphones",
-        ],
-        'readboo' => [
-            "label" => trans("navigation.readboo"),
-            "route" => "readboo",
+        'read-boo' => [
+            "label" => trans("navigation.read-boo"),
+            "route" => "read-boo",
             "icon" => "book-open",
         ],
         'why_us' => [
