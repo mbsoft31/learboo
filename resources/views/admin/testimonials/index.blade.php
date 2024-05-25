@@ -22,7 +22,7 @@
     </div>
     <ul role="list" class="mt-12 divide-y divide-gray-100 overflow-hidden bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl">
         @forelse($testimonials as $testimonial)
-            <x-admin.testimonial.list-item :testimonial="$testimonial" />
+            <x-admin.testimonial.list-Item :testimonial="$testimonial" />
         @empty
             <div class="px-4 py-5 sm:px-6">
                 <div class="text-center">
