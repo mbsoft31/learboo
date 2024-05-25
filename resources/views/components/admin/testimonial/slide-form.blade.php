@@ -1,14 +1,14 @@
 @props([
     'model' => null
 ])
-<div x-data="slideForm({open: false})" class="relative z-40" aria-labelledby="slide-over-title" role="dialog"
+<div x-data="slideForm({open: false})" class="relative" aria-labelledby="slide-over-title" role="dialog"
      aria-modal="true">
     <button @click="openSlidePanel()" type="button"
             class="flex-shrink-0 inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
         {{ $action }}
     </button>
     <div x-show="open" class="fixed inset-0 bg-indigo-950/25"></div>
-    <div x-show="open" class="fixed inset-0 overflow-hidden">
+    <div x-show="open" class="fixed inset-0 z-40 overflow-hidden">
         <div class="absolute inset-0 overflow-hidden">
             <div @click.outside="closeSlidePanel()"
                  class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16">
