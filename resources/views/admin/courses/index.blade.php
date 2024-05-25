@@ -5,7 +5,7 @@
     {{--Banner--}}
     <x-banner></x-banner>
     {{--End Banner--}}
-    {!! $table->render() !!}
+    {!! $table !!}
 </x-app-layout>
 
 <script>

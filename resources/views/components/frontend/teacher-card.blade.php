@@ -1,11 +1,11 @@
 @props([
     'teacher' => null
 ])
-<div class="relative flex flex-col gap-10 sm:flex-row" {{ $attributes }}>
+<div {{ $attributes->merge(["class"=>"relative flex flex-col gap-10 sm:flex-row"]) }}>
     <img class="aspect-[4/5] w-52 flex-none rounded-2xl object-cover" src="{{ $teacher->imageUrl }}" alt="">
     <div class="max-w-xl flex-auto">
         <h3 class="text-lg font-semibold leading-8 tracking-tight text-gray-900">
-            {{ $teacher->fullName }}, ({{ $teacher->nick_name }})
+            {{ $teacher->fullName }}
         </h3>
         <p class="capitalize text-base leading-7 text-gray-600">{{ join(', ', $teacher->role) }}</p>
         <p class="hidden sm:block mt-6 text-base leading-7 text-gray-600">{!! \Illuminate\Mail\Markdown::parse($teacher->about) !!}</p>

@@ -7,11 +7,12 @@ use Core\LmsLite\DataObjects\CourseData;
 use Core\LmsLite\View\Cells\TableCell;
 use Core\LmsLite\View\Menu\Menu;
 use Core\LmsLite\View\Menu\MenuItemLink;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Throwable;
 
-class CourseTableTest
+class CourseTableTest implements \Stringable, Renderable
 {
     protected array $columns = [];
     protected array $actions = [
@@ -142,5 +143,13 @@ class CourseTableTest
                 return view('lms::table-row', ['row' => $row])->render();
             }), "\n")
         ])->render();
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function __toString(): string
+    {
+        return $this->render();
     }
 }
